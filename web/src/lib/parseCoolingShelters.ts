@@ -24,7 +24,7 @@ const normalizeKey = (key: string): string =>
     .replace(/\s+/g, '')
     .replace(/[()（）]/g, (char) => (char === '（' ? '(' : ')'))
     .replace(/・/g, '')
-    .replace(/　/g, '')
+    .replace(/\u3000/g, '')
     .replace(/：/g, ':');
 
 const cleanValue = (value: unknown): string | undefined => {
