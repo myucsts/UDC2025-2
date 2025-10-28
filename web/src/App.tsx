@@ -46,6 +46,17 @@ const DEFAULT_CENTER: LatLngTuple = [35.8617, 139.6455];
 const DEFAULT_ZOOM = 10;
 const OSRM_ENDPOINT = 'https://router.project-osrm.org/route/v1';
 
+const withBasePath = (path: string): string => {
+  const base = import.meta.env.BASE_URL ?? '/';
+  const normalizedBase = base.endsWith('/')
+    ? base.slice(0, -1)
+    : base;
+  const normalizedPath = path.startsWith('/')
+    ? path.slice(1)
+    : path;
+  return `${normalizedBase}/${normalizedPath}`;
+};
+
 const parseEncoding = (contentType: string | null): string | undefined => {
   if (!contentType) return undefined;
   const match = contentType.match(/charset=([^;]+)/i);
@@ -248,8 +259,8 @@ function App() {
         import.meta.env.VITE_COOLING_SHELTER_URL?.trim() ?? '';
       const sources = [
         preferredFromEnv,
-        '/data/cooling-shelters.csv',
-        '/data/cooling-shelters.sample.csv',
+        withBasePath('data/cooling-shelters.csv'),
+        withBasePath('data/cooling-shelters.sample.csv'),
       ].filter(Boolean);
       try {
         const { shelters: data, sourceUrl } =
